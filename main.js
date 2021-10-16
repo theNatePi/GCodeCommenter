@@ -114,11 +114,9 @@ function main() {
 
 
 
-
         if (current_line_split.endsWith(";")) {
             current_line_split = current_line_split.slice(0, -1);
         }
-
 
         total_line += "<br>" + current_line_split;
 
