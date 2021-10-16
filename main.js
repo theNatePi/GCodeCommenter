@@ -1,5 +1,4 @@
-let copy_lines = "";
-let line = ""
+
 
 function main() {
     let input_code = prompt('Input code here: ');
@@ -95,15 +94,16 @@ function main() {
         i ++;
     }
 
+    let iup = i + 1;
+
+
+    total_line = total_line.replace("M30", "M05 ; Turn off Spindle    <br>N" + i + " G01 X4 Y3 Z1 ; Safe space <br>N" + iup + " M02 ; End program ");
+
     document.getElementById("OutputP").innerHTML = "";
     document.getElementById("OutputP").innerHTML += total_line;
 }
 
-function copy () {
-    navigator.clipboard.writeText(copy_lines);
-}
 
 
 document.getElementById("PInputButton").addEventListener("click", main);
-document.getElementById("CopyButton").addEventListener("click", copy);
 
