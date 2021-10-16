@@ -1,4 +1,16 @@
 
+function removeNBegin(line) {
+    let line_components = line.split(" ");
+    if (line_components[0].length >= 2) {
+        if (line_components[0].startsWith("N")) {
+            // Remove code line
+            line = line.slice(line_components[0].length + 1);
+        }
+    }
+    return line;
+}
+
+
 
 function main() {
     let input_code = prompt('Input code here: ');
@@ -13,13 +25,16 @@ function main() {
         // Remove the current line number
         let current_line_split = all_lines[i];
         // Split the code into its parts
-        let current_line_components = current_line_split.split(" ");
-        if (current_line_components[0].length >= 2) {
-            if (current_line_components[0].startsWith("N")) {
-                // Remove code line
-                current_line_split = current_line_split.slice(current_line_components[0].length + 1);
-            }
-        }
+        // let current_line_components = current_line_split.split(" ");
+        // if (current_line_components[0].length >= 2) {
+        //     if (current_line_components[0].startsWith("N")) {
+        //         // Remove code line
+        //         current_line_split = current_line_split.slice(current_line_components[0].length + 1);
+        //     }
+        // }
+
+        current_line_split = removeNBegin(current_line_split);
+
         // Add new code line
         current_line_split = "N" + i + " " + current_line_split;
         current_line_split += " ;";
@@ -69,17 +84,34 @@ function main() {
                 current_line_split += " Spindle off";
             }
         }
+        if (current_line_split.includes("T")) {
+            let next_line = i + 1;
+            let next_line_content = all_lines[next_line];
+            next_line_content = removeNBegin(next_line_content);
+            let correct_tool = "";
+
+            if (next_line_content.startsWith(";")) {
+                if (i > 3) {
+                    next_line_content = next_line_content.slice(5);
+                    if (next_line_content.includes("1/4 End Mill")) {
+                        correct_tool = "4";
+                    }
+                }
+            }
+
+
+            if (!(current_line_split.split(" "))[1].startsWith(";")) {
+                let split_on_t = current_line_split.split("T");
+                split_on_t[0] += "T" + correct_tool;
+                current_line_split = split_on_t[0] + split_on_t[1].slice(1)
+            }
+        }
         if (current_line_split.includes("M06") || current_line_split.includes("M6")) {
             if (!current_line_split.includes("M60")) {
                 current_line_split += " Tool change";
             }
         }
-        if (current_line_split.includes("T")) {
-            let split_for_t = current_line_split.split("T");
-            let selected_tool_number = split_for_t[1].split(" ");
-            let tool = selected_tool_number[0];
-            current_line_split += " Tool " + tool;
-        }
+
 
 
 
@@ -87,7 +119,6 @@ function main() {
             current_line_split = current_line_split.slice(0, -1);
         }
 
-        console.log(current_line_split);
 
         total_line += "<br>" + current_line_split;
 
