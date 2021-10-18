@@ -94,7 +94,12 @@ function main() {
                 if (i > 3) {
                     next_line_content = next_line_content.slice(5);
                     if (next_line_content.includes("1/4 End Mill")) {
-                        correct_tool = "4";
+                        correct_tool = "3";
+                    } else if (next_line_content.includes("1/8 Ballmill")) {
+                        correct_tool = "1"; 
+                    }
+                    else {
+                        correct_tool = "INPUT TOOL";
                     }
                 }
             }
