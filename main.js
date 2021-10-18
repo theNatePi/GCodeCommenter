@@ -95,7 +95,7 @@ function main() {
                     next_line_content = next_line_content.slice(5);
                     if (next_line_content.includes("1/4 End Mill")) {
                         correct_tool = "3";
-                    } else if (next_line_content.includes("1/8 Ballmill")) {
+                    } else if (next_line_content.includes("1/8 Ballnose")) {
                         correct_tool = "1"; 
                     }
                     else {
